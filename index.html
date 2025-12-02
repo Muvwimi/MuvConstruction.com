@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muv Construction - Building Excellence in Zambia</title>
+    <meta name="description" content="Muv Construction delivers premium construction services in Zambia. From residential to commercial projects, we build with precision, quality, and innovation.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'steel-blue': '#1e3a8a',
+                        'charcoal': '#374151',
+                        'copper': '#ea580c',
+                        'sage': '#16a34a',
+                        'warm-white': '#fefefe'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'source': ['Source Sans Pro', 'sans-serif'],
+                        'playfair': ['Playfair Display', 'serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 65, 81, 0.05) 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #ea580c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #ea580c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stagger-delay-1 { transition-delay: 0.1s; }
+        .stagger-delay-2 { transition-delay: 0.2s; }
+        .stagger-delay-3 { transition-delay: 0.3s; }
+        .stagger-delay-4 { transition-delay: 0.4s; }
+        
+        .logo-m {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 4rem;
+            color: #1e3a8a;
+            text-shadow: 0 4px 8px rgba(30, 58, 138, 0.3);
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        
+        .timeline-item.active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="font-source text-charcoal bg-warm-white">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-warm-white/90 backdrop-blur-md border-b border-steel-blue/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="logo-m">M</div>
+                    <div class="font-inter font-bold text-xl text-steel-blue">Muv Construction</div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">Home</a>
+                    <a href="services.html" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">Services</a>
+                    <a href="#about" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">About</a>
+                    <a href="contact.html" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">Contact</a>
+                    <a href="contact.html" class="btn-primary px-6 py-2 rounded-lg text-white font-medium">Get Quote</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-charcoal hover:text-steel-blue">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-warm-white border-t border-steel-blue/10">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" class="block font-medium text-charcoal hover:text-steel-blue transition-colors">Home</a>
+                <a href="services.html" class="block font-medium text-charcoal hover:text-steel-blue transition-colors">Services</a>
+                <a href="#about" class="block font-medium text-charcoal hover:text-steel-blue transition-colors">About</a>
+                <a href="contact.html" class="block font-medium text-charcoal hover:text-steel-blue transition-colors">Contact</a>
+                <a href="contact.html" class="btn-primary block px-6 py-2 rounded-lg text-white font-medium text-center">Get Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="resources/hero-construction.png" alt="Muv Construction Hero" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-steel-blue/20 to-charcoal/10"></div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating-element absolute top-20 left-10 w-16 h-16 bg-copper/20 rounded-lg rotate-45"></div>
+            <div class="floating-element absolute top-40 right-20 w-12 h-12 bg-steel-blue/20 rounded-full" style="animation-delay: -2s;"></div>
+            <div class="floating-element absolute bottom-40 left-20 w-20 h-20 bg-sage/20 rounded-lg rotate-12" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <div class="logo-m mb-4 stagger-delay-1">M</div>
+                <h1 class="font-playfair text-5xl md:text-7xl font-bold text-gradient mb-6 stagger-delay-2">
+                    <span id="typed-text"></span>
+                </h1>
+                <p class="text-xl md:text-2xl text-charcoal/80 mb-8 max-w-3xl mx-auto stagger-delay-3">
+                    Building Zambia's future with precision, quality, and innovation. From residential homes to commercial complexes, we deliver excellence in every project.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center stagger-delay-4">
+                    <a href="services.html" class="btn-primary px-8 py-4 rounded-lg text-white font-semibold text-lg">
+                        View Our Services
+                    </a>
+                    <a href="contact.html" class="px-8 py-4 rounded-lg border-2 border-steel-blue text-steel-blue font-semibold text-lg hover:bg-steel-blue hover:text-white transition-all">
+                        Get Free Quote
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-steel-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Company Overview -->
+    <section class="py-20 bg-gradient-to-b from-warm-white to-steel-blue/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Building Excellence Since Day One</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Muv Construction has been transforming Zambia's landscape through innovative construction solutions, 
+                    delivering projects that stand as testaments to our commitment to quality and precision.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="text-center reveal stagger-delay-1">
+                    <div class="bg-steel-blue text-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+                        <span id="counter-projects">0</span>+
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Projects Completed</h3>
+                    <p class="text-charcoal/70">Successfully delivered diverse construction projects across Zambia</p>
+                </div>
+                
+                <div class="text-center reveal stagger-delay-2">
+                    <div class="bg-copper text-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+                        <span id="counter-years">0</span>+
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Years Experience</h3>
+                    <p class="text-charcoal/70">Deep industry expertise and proven track record</p>
+                </div>
+                
+                <div class="text-center reveal stagger-delay-3">
+                    <div class="bg-sage text-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+                        <span id="counter-clients">0</span>+
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Satisfied Clients</h3>
+                    <p class="text-charcoal/70">Trusted by homeowners, businesses, and government agencies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Preview -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Our Services</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Comprehensive construction solutions tailored to meet your specific needs, 
+                    from initial design to final construction and everything in between.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card-hover bg-white rounded-xl p-8 shadow-lg border border-steel-blue/10 reveal stagger-delay-1">
+                    <div class="w-16 h-16 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-steel-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-4">General Contracting</h3>
+                    <p class="text-charcoal/70 mb-6">Complete construction management from planning to completion, ensuring quality and timeline adherence.</p>
+                    <a href="services.html" class="text-steel-blue font-medium hover:text-copper transition-colors">Learn More →</a>
+                </div>
+                
+                <div class="card-hover bg-white rounded-xl p-8 shadow-lg border border-steel-blue/10 reveal stagger-delay-2">
+                    <div class="w-16 h-16 bg-copper/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-4">Design-Build</h3>
+                    <p class="text-charcoal/70 mb-6">Integrated design and construction services for streamlined project delivery and cost efficiency.</p>
+                    <a href="services.html" class="text-steel-blue font-medium hover:text-copper transition-colors">Learn More →</a>
+                </div>
+                
+                <div class="card-hover bg-white rounded-xl p-8 shadow-lg border border-steel-blue/10 reveal stagger-delay-3">
+                    <div class="w-16 h-16 bg-sage/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-4">Project Management</h3>
+                    <p class="text-charcoal/70 mb-6">Professional project management ensuring timely delivery, budget control, and quality assurance.</p>
+                    <a href="services.html" class="text-steel-blue font-medium hover:text-copper transition-colors">Learn More →</a>
+                </div>
+                
+                <div class="card-hover bg-white rounded-xl p-8 shadow-lg border border-steel-blue/10 reveal stagger-delay-4">
+                    <div class="w-16 h-16 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-steel-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-4">Pre-Construction</h3>
+                    <p class="text-charcoal/70 mb-6">Comprehensive planning, estimation, and feasibility studies to ensure project success.</p>
+                    <a href="services.html" class="text-steel-blue font-medium hover:text-copper transition-colors">Learn More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Highlights -->
+    <section class="py-20 bg-gradient-to-b from-steel-blue/5 to-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Featured Projects</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Explore some of our most impactful construction projects that showcase our expertise and commitment to excellence.
+                </p>
+            </div>
+            
+            <div class="splide" id="project-carousel">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                                <img src="https://kimi-web-img.moonshot.cn/img/www.mpbirlacement.com/f4356136e568e61529130a19e2bbd41b5e175ef9.jpg" alt="Modern Commercial Building" class="w-full h-64 object-cover">
+                                <div class="p-6">
+                                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Commercial Complex</h3>
+                                    <p class="text-charcoal/70 mb-4">Multi-story commercial building with modern amenities and sustainable design features.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-copper font-medium">Lusaka, Zambia</span>
+                                        <span class="text-steel-blue font-medium">2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                                <img src="https://kimi-web-img.moonshot.cn/img/www.nachmanconstruction.com/7cdf4bbf687141116cac65b2949096819b2ea705.jpg" alt="Residential Development" class="w-full h-64 object-cover">
+                                <div class="p-6">
+                                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Residential Estate</h3>
+                                    <p class="text-charcoal/70 mb-4">Luxury residential development featuring contemporary design and premium finishes.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-copper font-medium">Lusaka, Zambia</span>
+                                        <span class="text-steel-blue font-medium">2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                                <img src="https://kimi-web-img.moonshot.cn/img/s3da-design.com/f0a2c5e000e027ad7a7230cb5df0f5c8f8037723.jpg" alt="Infrastructure Project" class="w-full h-64 object-cover">
+                                <div class="p-6">
+                                    <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Infrastructure Development</h3>
+                                    <p class="text-charcoal/70 mb-4">Large-scale infrastructure project supporting community development and growth.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-copper font-medium">Lusaka, Zambia</span>
+                                        <span class="text-steel-blue font-medium">2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Timeline -->
+    <section id="about" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Our Journey</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Follow our growth from a small construction firm to one of Zambia's leading construction companies.
+                </p>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-steel-blue/20"></div>
+                
+                <div class="space-y-16">
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-white rounded-xl p-6 shadow-lg border border-steel-blue/10">
+                                <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Company Founded</h3>
+                                <p class="text-charcoal/70 mb-2">Muv Construction was established with a vision to transform Zambia's construction industry.</p>
+                                <span class="text-copper font-medium">2020</span>
+                            </div>
+                        </div>
+                        <div class="w-4 h-4 bg-steel-blue rounded-full border-4 border-warm-white relative z-10"></div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                    
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8"></div>
+                        <div class="w-4 h-4 bg-copper rounded-full border-4 border-warm-white relative z-10"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="bg-white rounded-xl p-6 shadow-lg border border-steel-blue/10">
+                                <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">First Major Project</h3>
+                                <p class="text-charcoal/70 mb-2">Completed our first major commercial project, establishing our reputation for quality.</p>
+                                <span class="text-copper font-medium">2021</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-white rounded-xl p-6 shadow-lg border border-steel-blue/10">
+                                <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Team Expansion</h3>
+                                <p class="text-charcoal/70 mb-2">Expanded our team of professionals and invested in advanced construction technology.</p>
+                                <span class="text-copper font-medium">2022</span>
+                            </div>
+                        </div>
+                        <div class="w-4 h-4 bg-sage rounded-full border-4 border-warm-white relative z-10"></div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                    
+                    <div class="timeline-item flex items-center">
+                        <div class="w-1/2 pr-8"></div>
+                        <div class="w-4 h-4 bg-steel-blue rounded-full border-4 border-warm-white relative z-10"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="bg-white rounded-xl p-6 shadow-lg border border-steel-blue/10">
+                                <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Industry Recognition</h3>
+                                <p class="text-charcoal/70 mb-2">Received recognition for excellence in construction and sustainable building practices.</p>
+                                <span class="text-copper font-medium">2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-steel-blue to-copper text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold mb-6">Ready to Build Your Vision?</h2>
+                <p class="text-xl mb-8 max-w-3xl mx-auto opacity-90">
+                    Let's discuss your next construction project. Our team of experts is ready to turn your ideas into reality 
+                    with precision, quality, and innovation that defines Muv Construction.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-white text-steel-blue px-8 py-4 rounded-lg font-semibold text-lg hover:bg-warm-white transition-colors">
+                        Start Your Project
+                    </a>
+                    <a href="services.html" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-steel-blue transition-colors">
+                        View Our Work
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="logo-m text-white text-3xl">M</div>
+                        <div class="font-inter font-bold text-xl">Muv Construction</div>
+                    </div>
+                    <p class="text-white/80 mb-4">
+                        Building Zambia's future with precision, quality, and innovation. 
+                        Your trusted construction partner for residential and commercial projects.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-inter text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-white/80 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="services.html" class="text-white/80 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#about" class="text-white/80 hover:text-white transition-colors">About</a></li>
+                        <li><a href="contact.html" class="text-white/80 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-inter text-lg font-semibold mb-4">Contact Info</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-white/80">+260 975 144 742</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-white/80">muvconstruction@gmail.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-white/80">10445N, Golf Course, Lusaka, Zambia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p class="text-white/60">
+                    © 2024 Muv Construction. All rights reserved. | Building Excellence in Zambia
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

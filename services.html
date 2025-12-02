@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Muv Construction</title>
+    <meta name="description" content="Explore our comprehensive construction services including general contracting, design-build, project management, and pre-construction services in Zambia.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'steel-blue': '#1e3a8a',
+                        'charcoal': '#374151',
+                        'copper': '#ea580c',
+                        'sage': '#16a34a',
+                        'warm-white': '#fefefe'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'source': ['Source Sans Pro', 'sans-serif'],
+                        'playfair': ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #ea580c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .logo-m {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #1e3a8a;
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #ea580c 100%);
+            color: white;
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calc-step {
+            transition: all 0.5s ease;
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="font-source text-charcoal bg-warm-white">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-warm-white/90 backdrop-blur-md border-b border-steel-blue/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="logo-m">M</div>
+                    <div class="font-inter font-bold text-xl text-steel-blue">Muv Construction</div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">Home</a>
+                    <a href="services.html" class="nav-link font-medium text-steel-blue border-b-2 border-steel-blue">Services</a>
+                    <a href="index.html#about" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">About</a>
+                    <a href="contact.html" class="nav-link font-medium text-charcoal hover:text-steel-blue transition-colors">Contact</a>
+                    <a href="contact.html" class="btn-primary px-6 py-2 rounded-lg text-white font-medium">Get Quote</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-charcoal hover:text-steel-blue">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Services Hero Section -->
+    <section class="pt-24 pb-16 bg-gradient-to-b from-steel-blue/5 to-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <h1 class="font-playfair text-4xl md:text-6xl font-bold text-steel-blue mb-6">Our Services</h1>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Comprehensive construction solutions tailored to meet your specific needs. 
+                    From initial design to final construction and everything in between.
+                </p>
+            </div>
+            
+            <!-- Service Calculator Tool -->
+            <div class="max-w-4xl mx-auto reveal">
+                <div class="bg-white rounded-2xl shadow-xl border border-steel-blue/10 p-8 mb-16">
+                    <div class="text-center mb-8">
+                        <h2 class="font-playfair text-3xl font-bold text-steel-blue mb-4">Project Cost Calculator</h2>
+                        <p class="text-charcoal/70">Get an instant estimate for your construction project</p>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-steel-blue/10 rounded-full h-2 mb-8">
+                        <div class="progress-bar bg-gradient-to-r from-steel-blue to-copper h-2 rounded-full" style="width: 25%"></div>
+                    </div>
+                    
+                    <form id="service-calculator" class="space-y-8">
+                        <!-- Step 1: Service Type -->
+                        <div class="calc-step">
+                            <h3 class="font-inter text-xl font-semibold text-steel-blue mb-6">Select Service Type</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 border-2 border-steel-blue/20 rounded-lg cursor-pointer hover:border-steel-blue/40 transition-colors">
+                                    <input type="radio" name="service-type" value="general-contracting" class="mr-3 text-steel-blue">
+                                    <div>
+                                        <div class="font-semibold text-steel-blue">General Contracting</div>
+                                        <div class="text-sm text-charcoal/70">Complete construction management</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border-2 border-steel-blue/20 rounded-lg cursor-pointer hover:border-steel-blue/40 transition-colors">
+                                    <input type="radio" name="service-type" value="design-build" class="mr-3 text-steel-blue">
+                                    <div>
+                                        <div class="font-semibold text-steel-blue">Design-Build</div>
+                                        <div class="text-sm text-charcoal/70">Integrated design & construction</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border-2 border-steel-blue/20 rounded-lg cursor-pointer hover:border-steel-blue/40 transition-colors">
+                                    <input type="radio" name="service-type" value="project-management" class="mr-3 text-steel-blue">
+                                    <div>
+                                        <div class="font-semibold text-steel-blue">Project Management</div>
+                                        <div class="text-sm text-charcoal/70">Professional project oversight</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border-2 border-steel-blue/20 rounded-lg cursor-pointer hover:border-steel-blue/40 transition-colors">
+                                    <input type="radio" name="service-type" value="pre-construction" class="mr-3 text-steel-blue">
+                                    <div>
+                                        <div class="font-semibold text-steel-blue">Pre-Construction</div>
+                                        <div class="text-sm text-charcoal/70">Planning & feasibility studies</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="text-center mt-8">
+                                <button type="button" class="next-step btn-primary px-8 py-3 rounded-lg text-white font-semibold">Next Step</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Project Details -->
+                        <div class="calc-step hidden">
+                            <h3 class="font-inter text-xl font-semibold text-steel-blue mb-6">Project Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-steel-blue font-medium mb-2">Project Size (sq meters)</label>
+                                    <input type="number" name="project-size" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" placeholder="e.g., 200" required>
+                                </div>
+                                <div>
+                                    <label class="block text-steel-blue font-medium mb-2">Location</label>
+                                    <select name="location" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" required>
+                                        <option value="">Select location</option>
+                                        <option value="lusaka">Lusaka</option>
+                                        <option value="kitwe">Kitwe</option>
+                                        <option value="ndola">Ndola</option>
+                                        <option value="livingstone">Livingstone</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex justify-center space-x-4 mt-8">
+                                <button type="button" class="prev-step px-8 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-semibold hover:bg-steel-blue hover:text-white transition-colors">Previous</button>
+                                <button type="button" class="next-step btn-primary px-8 py-3 rounded-lg text-white font-semibold">Next Step</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Contact Information -->
+                        <div class="calc-step hidden">
+                            <h3 class="font-inter text-xl font-semibold text-steel-blue mb-6">Contact Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-steel-blue font-medium mb-2">Full Name</label>
+                                    <input type="text" name="full-name" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" required>
+                                </div>
+                                <div>
+                                    <label class="block text-steel-blue font-medium mb-2">Phone Number</label>
+                                    <input type="tel" name="phone" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" required>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-steel-blue font-medium mb-2">Email Address</label>
+                                    <input type="email" name="email" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" required>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-steel-blue font-medium mb-2">Project Description</label>
+                                    <textarea name="description" rows="4" class="w-full p-3 border border-steel-blue/20 rounded-lg focus:border-steel-blue focus:outline-none" placeholder="Tell us about your project..."></textarea>
+                                </div>
+                            </div>
+                            <div class="flex justify-center space-x-4 mt-8">
+                                <button type="button" class="prev-step px-8 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-semibold hover:bg-steel-blue hover:text-white transition-colors">Previous</button>
+                                <button type="button" id="calculate-btn" class="btn-primary px-8 py-3 rounded-lg text-white font-semibold">Calculate Estimate</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Results -->
+                    <div id="calculation-result" class="hidden mt-12 p-8 bg-gradient-to-r from-steel-blue/5 to-copper/5 rounded-xl border border-steel-blue/20">
+                        <h3 class="font-playfair text-2xl font-bold text-steel-blue mb-6 text-center">Your Project Estimate</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <div class="text-3xl font-bold text-steel-blue mb-2" id="estimated-cost">ZMW 0</div>
+                                <div class="text-charcoal/70">Estimated Cost</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <div class="text-3xl font-bold text-copper mb-2" id="estimated-timeline">0 weeks</div>
+                                <div class="text-charcoal/70">Project Timeline</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                <div class="text-3xl font-bold text-sage mb-2" id="service-name">Service</div>
+                                <div class="text-charcoal/70">Service Type</div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-8">
+                            <p class="text-charcoal/70 mb-4">This is a preliminary estimate. Contact us for a detailed quote.</p>
+                            <a href="contact.html" class="btn-primary px-8 py-3 rounded-lg text-white font-semibold">Get Detailed Quote</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Services -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Service Details</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Comprehensive construction solutions designed to meet your specific requirements 
+                    and exceed your expectations.
+                </p>
+            </div>
+            
+            <div class="space-y-16">
+                <!-- General Contracting -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center reveal">
+                    <div>
+                        <h3 class="font-playfair text-3xl font-bold text-steel-blue mb-6">General Contracting</h3>
+                        <p class="text-charcoal/80 mb-6 text-lg">
+                            Our general contracting services provide complete construction management from project inception to completion. 
+                            We handle all aspects of construction including planning, procurement, execution, and quality control.
+                        </p>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Complete project management and oversight</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Quality control and safety management</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Timeline and budget adherence</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Subcontractor coordination</span>
+                            </div>
+                        </div>
+                        <a href="contact.html" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold">Request Quote</a>
+                    </div>
+                    <div class="bg-steel-blue/5 rounded-xl p-8">
+                        <img src="https://kimi-web-img.moonshot.cn/img/bosstraining.co.uk/170d6cdffd86014a82f714b547b1b908cf114f09.jpg" alt="General Contracting" class="w-full h-64 object-cover rounded-lg mb-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-steel-blue">150+</div>
+                                <div class="text-sm text-charcoal/70">Projects Completed</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-copper">98%</div>
+                                <div class="text-sm text-charcoal/70">On-Time Delivery</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Design-Build -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center reveal">
+                    <div class="bg-copper/5 rounded-xl p-8 lg:order-1">
+                        <img src="https://kimi-web-img.moonshot.cn/img/extensionarchitecture.co.uk/2a40718933751c1d77c94108926a7f8caf012640.webp" alt="Design-Build" class="w-full h-64 object-cover rounded-lg mb-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-steel-blue">50+</div>
+                                <div class="text-sm text-charcoal/70">Designs Completed</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-copper">25%</div>
+                                <div class="text-sm text-charcoal/70">Faster Delivery</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:order-2">
+                        <h3 class="font-playfair text-3xl font-bold text-steel-blue mb-6">Design-Build Services</h3>
+                        <p class="text-charcoal/80 mb-6 text-lg">
+                            Our integrated design-build approach combines architectural design and construction under one contract, 
+                            providing streamlined communication, faster project delivery, and cost efficiency.
+                        </p>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Single point of responsibility</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Faster project completion</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Cost-effective solutions</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Enhanced collaboration</span>
+                            </div>
+                        </div>
+                        <a href="contact.html" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold">Learn More</a>
+                    </div>
+                </div>
+                
+                <!-- Project Management -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center reveal">
+                    <div>
+                        <h3 class="font-playfair text-3xl font-bold text-steel-blue mb-6">Project Management</h3>
+                        <p class="text-charcoal/80 mb-6 text-lg">
+                            Professional project management services ensuring your construction project stays on schedule, 
+                            within budget, and meets all quality standards. Our experienced project managers coordinate 
+                            all aspects of your build.
+                        </p>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Detailed project scheduling</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Budget management and control</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Risk assessment and mitigation</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-copper rounded-full"></div>
+                                <span class="text-charcoal/80">Regular progress reporting</span>
+                            </div>
+                        </div>
+                        <a href="contact.html" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold">Get Started</a>
+                    </div>
+                    <div class="bg-sage/5 rounded-xl p-8">
+                        <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/f3e8f33d70e33dd894aca30cac669eb010c7b1a2.jpg" alt="Project Management" class="w-full h-64 object-cover rounded-lg mb-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-steel-blue">100%</div>
+                                <div class="text-sm text-charcoal/70">Budget Compliance</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-copper">24/7</div>
+                                <div class="text-sm text-charcoal/70">Project Monitoring</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Portfolio -->
+    <section class="py-20 bg-gradient-to-b from-steel-blue/5 to-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-steel-blue mb-6">Project Portfolio</h2>
+                <p class="text-xl text-charcoal/80 max-w-3xl mx-auto">
+                    Explore our diverse portfolio of completed projects showcasing our expertise 
+                    across residential, commercial, and infrastructure sectors.
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 reveal">
+                <button class="filter-btn active px-6 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-medium" data-filter="all">All Projects</button>
+                <button class="filter-btn px-6 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-medium" data-filter="residential">Residential</button>
+                <button class="filter-btn px-6 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-medium" data-filter="commercial">Commercial</button>
+                <button class="filter-btn px-6 py-3 rounded-lg border-2 border-steel-blue text-steel-blue font-medium" data-filter="infrastructure">Infrastructure</button>
+            </div>
+            
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="project-grid">
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="commercial">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.builderspace.com/8b70342ef67ab67bbd5c8502466648bda0664328.jpg" alt="Commercial Complex" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Modern Office Complex</h3>
+                        <p class="text-charcoal/70 mb-4">Multi-story commercial building with modern amenities and sustainable design features.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Lusaka, Zambia</span>
+                            <span class="text-steel-blue font-medium">2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="residential">
+                    <img src="https://kimi-web-img.moonshot.cn/img/gilchriststeels.co.uk/331016c1f44c32dec704fc7c087a44fd312815eb.jpg" alt="Luxury Home" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Luxury Residential Estate</h3>
+                        <p class="text-charcoal/70 mb-4">High-end residential development featuring contemporary architecture and premium finishes.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Lusaka, Zambia</span>
+                            <span class="text-steel-blue font-medium">2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="infrastructure">
+                    <img src="https://kimi-web-img.moonshot.cn/img/aspenequipment.com/917547a5684283ac559a685edd96d2fbdf8f4eff.jpg" alt="Infrastructure Project" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Infrastructure Development</h3>
+                        <p class="text-charcoal/70 mb-4">Large-scale infrastructure project supporting community development and economic growth.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Lusaka, Zambia</span>
+                            <span class="text-steel-blue font-medium">2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="commercial">
+                    <img src="https://kimi-web-img.moonshot.cn/img/s3da-design.com/835696955db71021629ad2fa8d140d570b167bfa.jpg" alt="Retail Complex" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Retail Shopping Center</h3>
+                        <p class="text-charcoal/70 mb-4">Modern retail complex with multiple storefronts and customer amenities.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Kitwe, Zambia</span>
+                            <span class="text-steel-blue font-medium">2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="residential">
+                    <img src="https://kimi-web-img.moonshot.cn/img/assets-us-01.kc-usercontent.com/f6ae090d86f0e6eda7f71846d7a98113944077db.jpg" alt="Housing Development" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Housing Development</h3>
+                        <p class="text-charcoal/70 mb-4">Affordable housing project with modern amenities and community facilities.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Ndola, Zambia</span>
+                            <span class="text-steel-blue font-medium">2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="infrastructure">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.cfisherconstruction.com/c5f339708459630326da13da71a8618b9df1e513.jpg" alt="Road Construction" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-inter text-xl font-semibold text-steel-blue mb-2">Road Infrastructure</h3>
+                        <p class="text-charcoal/70 mb-4">Major road construction project improving transportation connectivity.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-copper font-medium">Livingstone, Zambia</span>
+                            <span class="text-steel-blue font-medium">2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-steel-blue to-copper text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold mb-6">Ready to Start Your Project?</h2>
+                <p class="text-xl mb-8 max-w-3xl mx-auto opacity-90">
+                    Let's discuss your construction needs. Our team of experts is ready to provide 
+                    you with comprehensive solutions tailored to your specific requirements.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contact.html" class="bg-white text-steel-blue px-8 py-4 rounded-lg font-semibold text-lg hover:bg-warm-white transition-colors">
+                        Get Free Consultation
+                    </a>
+                    <a href="index.html" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-steel-blue transition-colors">
+                        View Company Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="logo-m text-white">M</div>
+                        <div class="font-inter font-bold text-xl">Muv Construction</div>
+                    </div>
+                    <p class="text-white/80 mb-4">
+                        Building Zambia's future with precision, quality, and innovation. 
+                        Your trusted construction partner for residential and commercial projects.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-inter text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-white/80 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="services.html" class="text-white/80 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="index.html#about" class="text-white/80 hover:text-white transition-colors">About</a></li>
+                        <li><a href="contact.html" class="text-white/80 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-inter text-lg font-semibold mb-4">Contact Info</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span class="text-white/80">+260 975 144 742</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-white/80">muvconstruction@gmail.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-white/80">10445N, Golf Course, Lusaka, Zambia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p class="text-white/60">
+                    © 2024 Muv Construction. All rights reserved. | Building Excellence in Zambia
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
